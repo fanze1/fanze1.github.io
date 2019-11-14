@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>计算器</title>
+  <style type="text/css">
+    body{
+      padding: 0;
+      margin: 0;
+      background-color: rgba(255, 255, 255, 0);
+    }
+    #outer {
+      width: 1100px;
+      height: 700px;
+      background-color: #b8b3b8;
+      border: 2px solid rgb(0, 0, 0);
+      margin:0 auto;
+      border-radius: 20px;     /*  设置最外层父窗口的圆角  */
+    }
+    #top {
+      width: 200px;
+      padding-left: 40px;      /*  让小圆点距左边40像素  */
+      height: 50px;
+      margin: 0 auto;
+      display: table-cell;      /*  以单元格方式处理DIV,便于实现垂直居中  */
+      vertical-align: middle;   /*  让三个小圆点都居中垂直  */
+    }
+    .point {
+       width: 20px;      /*  要实现圆形，必须是一个正方形  */
+       height: 20px;
+       float: left;
+       margin-left: 10px;
+       border-radius:50%;    /*  设置小圆点的圆角半径为宽度的一半,这样可以实现一个圆  */
+     }
+    .bg-blue {
+      background-color: dodgerblue;
+    }
+    .bg-green {
+      background-color: darkgreen;
+    }
+    .bg-red {
+      background-color: orangered;
+    }
+    #c_text{
+      width: 1000px;
+      margin: auto;
+    }
+    #calculater #c_text #text{
+      padding-right: 10px;
+      width:1000px ;
+      height: 75px;
+      font-size: 40px;
+      font-family: "微软雅黑";
+      color: #2c2c2c;
+      text-align: right;
+      border:double 2px;
+      border-radius: 10px;
+    }
+    #calculater #c_value{
+      width: 1080px;
+      height: 408px;
+      margin: 20px auto;
+    }
+    #calculater #c_value ul{
+      margin: 0;
+    }
+    #calculater #c_value ul li{
+      margin: 10px;
+      list-style: none;
+      float: left;
+      width: 180px;
+      height: 80px;
+      line-height: 80px;
+      text-align: center;
+      background-color: #8cffe2;
+      border: 2px solid rgb(255, 255, 255);
+      font-size: 40px;
+      font-family: "微软雅黑";
+      color: black;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      -moz-user-select: none;
+      border-radius: 10px;
+    }
+
+    #calculater #c_value ul li:hover{
+      cursor: pointer;
+      background-color: #ff912a;
+    }
+
+  </style>
+  <script type="text/javascript">
+
+    //  判断是否按下计算符号
+    var Boo=false;
+
+    //   设置一个全局标志，用于记录用户最后一次点击的是不是运算符。
+    var isOperatorCanClicked = true;
+
+    //   设置一个全局标志，用于记录用户是否点击了=进行运算，如果已经进行过的运算，则再点击数字，视为重新输入。
+    var isEqualAlreadyClicked = false;
+
+    //   点击数字
+    function clickNumber(Num) {
+      var result=document.getElementById('text');
+      if (Boo) {
+        result.value=Num;           // 若接受过运算符，文本框清零
+        Boo=false;
+        return;
+      }
+        if (isEqualAlreadyClicked)
+        {
+          clearText();             // 如果=被点击，再次点击数字时清空屏幕
+          result.value+=Num;
+          isEqualAlreadyClicked = false;
+        }
+        else{
+          result.value+=Num;
+          isOperatorCanClicked = true;
+        }
+    }
+
+    //   清零
+    function clearText() {
+      location.replace(location)
+      isEqualAlreadyClicked = true;
+    }
+
+    //  退格
+    function deleteLast() {
+      var result=document.getElementById('text');
+      result.value=result.value.substring(0,result.value.length-1);
+      if (result.value=='') {
+        result.value=0;
+      }
+    }
+
+    //  实现运算结果
+    function doCalc(){
+      var text  = document.getElementById('text');
+      if(text.value == ""){
+        alert("您还没有输入任何值");
+      }
+      else{
+        text.value  = eval(text.value);     // eval（可以计算字符串)
+      }
+      isEqualAlreadyClicked = true;
+    }
+
+    //  负一次方运算
+    function Negative(){
+      var text  = document.getElementById('text');
+      if(text.value == ""){
+        alert("您还没有输入任何值");
+      }
+      else{
+        text.value = 1/text.value;
+      }
+      isOperatorCanClicked = false;
+    }
+
+    //  ln运算
+    function ln(){
+      var text  = document.getElementById('text');
+      if(text.value == ""){
+        alert("您还没有输入任何值");
+      }
+      else{
+        text.value =  Math.log(text.value);     //Math 对象用于执行数学任务,log(x)返回数的自然对数（底为e)
+      }
+      isEqualAlreadyClicked = true;
+      isPointCanClicked = true;
+    }
+
+    //   sin运算
+    function sin(){
+      var text  = document.getElementById('text');
+      if(text.value == ""){
+        alert("您还没有输入任何值");
+      }
+      else{
+        text.value =  Math.sin(text.value);   //Math 对象用于执行数学任务
+      }
+      isEqualAlreadyClicked = true;
+      isPointCanClicked = true;
+    }
+
+    //   平方根运算
+    function sqrt(){
+      var text  = document.getElementById('text');
+      if(text.value == ""){
+        alert("您还没有输入任何值");
+      }
+      else{
+        text.value =  Math.sqrt(text.value);
+      }
+      isEqualAlreadyClicked = true;
+      isPointCanClicked = true;
+    }
+
+  </script>
+
+</head>
+
+<body>
+<div id="calculater">
+  <div id="outer">
+    <div id="top">
+      <div class="point bg-red"></div>
+      <div class="point bg-blue"></div>
+      <div class="point bg-green"></div>
+    </div>
+  <div id="c_text">
+    <input type="text" id="text" value="" readonly="readonly"/>
+  </div>
+  <div id="c_value">
+    <ul>
+      <li onclick="clearText()">AC</li>
+      <li onclick="deleteLast()">←</li>
+      <li onclick="clearText()">CE</li>
+      <li onclick="clickNumber('%')">%</li>
+      <li onclick="clickNumber('/')">÷</li>
+      <li onclick="sin()" >sin</li>
+      <li onclick="clickNumber(7)">7</li>
+      <li onclick="clickNumber(8)">8</li>
+      <li onclick="clickNumber(9)">9</li>
+      <li onclick="clickNumber('*')">×</li>
+      <li onclick="ln()" >ln</li>
+      <li onclick="clickNumber(4)">4</li>
+      <li onclick="clickNumber(5)">5</li>
+      <li onclick="clickNumber(6)">6</li>
+      <li onclick="clickNumber('-')">-</li>
+      <li onclick="Negative()">x¯¹</li>
+      <li onclick="clickNumber(1)">1</li>
+      <li onclick="clickNumber(2)">2</li>
+      <li onclick="clickNumber(3)">3</li>
+      <li onclick="clickNumber('+')">+</li>
+      <li onclick="sqrt()">√</li>
+      <li onclick="clickNumber('00')">00</li>
+      <li onclick="clickNumber(0)">0</li>
+      <li onclick="clickNumber('.')">.</li>
+      <li onclick="doCalc()">=</li>
+    </ul>
+  </div>
+  </div>
+</div>
+</body>
+</html>
